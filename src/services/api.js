@@ -1,7 +1,7 @@
 import axios from "axios";
 import { telegramService } from "./telegram";
 
-const API_BASE_URL = "http://localhost:6969/api";
+const API_BASE_URL = "https://agrolink-backend-saup.onrender.com";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
