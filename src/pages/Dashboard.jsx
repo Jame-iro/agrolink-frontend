@@ -19,6 +19,7 @@ import {
   FiClock,
   FiTruck,
   FiBarChart2,
+  FiPlus,
 } from "react-icons/fi";
 import AddProductForm from "../components/AddProductForm";
 const Dashboard = () => {

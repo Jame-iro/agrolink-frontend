@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAppDispatch } from "../hooks/redux";
 import { productsAPI } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
-import { FiX, FiUpload, FiPlus } from "react-icons/fi";
+import { FiPlus, FiUpload, FiX } from "react-icons/fi";
 
 const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
   const dispatch = useAppDispatch();
