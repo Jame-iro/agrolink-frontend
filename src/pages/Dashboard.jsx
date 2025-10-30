@@ -426,7 +426,7 @@ const OrderCard = ({ order, role }) => {
 // Farmer Products Component
 // Replace the entire FarmerProducts component with this:
 const FarmerProducts = ({ products }) => {
-  const [showAddProduct, setShowAddProduct] = useState(true);
+  const [showAddProduct, setShowAddProduct] = useState(false);
   const dispatch = useAppDispatch();
   const { user } = useAuth();
 
