@@ -30,28 +30,37 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user) return;
+
+    if (!user) {
+      alert("Please log in first");
+      return;
+    }
 
     setLoading(true);
     try {
+      // Use the user's telegramId directly
       const productData = {
-        ...formData,
-        farmerId: user.id, // This will be the user's ObjectId from backend
-        farmerTelegramId: user.id, // Telegram user ID
+        name: formData.name,
+        description: formData.description,
         price: parseFloat(formData.price),
+        category: formData.category,
         stock: parseInt(formData.stock),
-        images: [], // We'll add image upload later
+        location: formData.location,
+        farmerId: user.id, // This should be the user's ObjectId from backend
+        farmerTelegramId: user.id, // Telegram user ID
+        images: [],
         tags: formData.tags
-          .split(",")
-          .map((tag) => tag.trim())
-          .filter((tag) => tag),
+          ? formData.tags
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter((tag) => tag)
+          : [],
       };
 
-      const response = await productsAPI.create(productData);
+      console.log("Sending product data:", productData);
 
-      if (onProductAdded) {
-        onProductAdded(response.data);
-      }
+      const response = await productsAPI.create(productData);
+      console.log("Product created successfully:", response.data);
 
       // Reset form
       setFormData({
@@ -64,10 +73,19 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
         tags: "",
       });
 
+      if (onProductAdded) {
+        onProductAdded(response.data);
+      }
+
       onClose();
     } catch (error) {
       console.error("Error creating product:", error);
-      alert("Failed to create product. Please try again.");
+      console.error("Error response:", error.response?.data);
+      alert(
+        `Failed to create product: ${
+          error.response?.data?.error || error.message
+        }`
+      );
     } finally {
       setLoading(false);
     }
