@@ -1,7 +1,7 @@
 import axios from "axios";
 import { telegramService } from "./telegram";
 
-const API_BASE_URL = "agrolink-backend-production.up.railway.app";
+const API_BASE_URL = "https://agrolink-backend-production.up.railway.app/api";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -25,7 +25,6 @@ export const authAPI = {
   updateRole: (telegramId, role) => api.put("/auth/role", { telegramId, role }),
 };
 
-// ... rest of your existing API exports ...
 export const productsAPI = {
   getAll: (params = {}) => api.get("/products", { params }),
   getById: (id) => api.get(`/products/${id}`),
