@@ -38,7 +38,6 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
 
     setLoading(true);
     try {
-      // Use the user's telegramId directly
       const productData = {
         name: formData.name,
         description: formData.description,
@@ -46,8 +45,8 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
         category: formData.category,
         stock: parseInt(formData.stock),
         location: formData.location,
-        farmerId: user.id, // This should be the user's ObjectId from backend
-        farmerTelegramId: user.id, // Telegram user ID
+        farmerId: user.id,
+        farmerTelegramId: user.id,
         images: [],
         tags: formData.tags
           ? formData.tags
