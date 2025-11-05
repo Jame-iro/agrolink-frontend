@@ -428,16 +428,6 @@ const FarmerProducts = ({ products }) => {
   const [showAddProduct, setShowAddProduct] = useState(false);
   const dispatch = useAppDispatch();
   const { user } = useAuth();
-  useEffect(() => {
-    if (user) {
-      dispatch(fetchUserOrders({ userId: user.id, role }));
-
-      if (role === "farmer") {
-        // Use farmerTelegramId instead of farmerId
-        dispatch(fetchProducts({ farmerTelegramId: user.id }));
-      }
-    }
-  }, [dispatch, user, role]);
 
   const handleProductAdded = (newProduct) => {
     // Refresh the products list
