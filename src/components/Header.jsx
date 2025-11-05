@@ -14,7 +14,7 @@ const Header = () => {
               <Logo variant="horizontal" size="medium" />
             </Link>
             
-            <nav className="hidden md:flex space-x-6">
+            <nav className="flex space-x-6">
               <Link 
                 to="/" 
                 className="text-gray-700 hover:text-green-600 transition-colors"
