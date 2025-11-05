@@ -45,8 +45,9 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
         category: formData.category,
         stock: parseInt(formData.stock),
         location: formData.location,
-        farmerId: user.id,
-        farmerTelegramId: user.id,
+        farmerTelegramId: user.id, 
+        farmerName: user.first_name,
+        farmerUsername: user.username,
         images: [],
         tags: formData.tags
           ? formData.tags
