@@ -9,7 +9,7 @@ import { addToCart } from "../store/slices/cartSlice";
 import { useAuth } from "../hooks/useAuth";
 import { telegramService } from "../services/telegram";
 
-const ProductOverview = () => {
+const ProductOverview = ({product}) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -26,14 +26,21 @@ const ProductOverview = () => {
 
     return () => {
       dispatch(clearCurrentProduct());
-      // Clean up Telegram main button
       if (isTelegram) {
         telegramService.hideMainButton();
       }
     };
   }, [dispatch, id, isTelegram]);
 
-  // Setup Telegram main button for ordering
+  const getFarmerName = () => {
+    if (product.farmerName) {
+      return product.farmerName;
+    } else if (product.farmerId && product.farmerId.firstName) {
+      return product.farmerId.firstName;
+    }
+    return "Unknown Farmer";
+  };
+
   useEffect(() => {
     if (isTelegram && currentProduct?.isAvailable) {
       const handleOrder = () => {
@@ -129,9 +136,7 @@ const ProductOverview = () => {
             </div>
             <div>
               <span className="text-gray-500">Farmer:</span>
-              <p className="font-semibold">
-                {product.farmerName || product.farmerId?.firstName || "Unknown"}
-              </p>
+              <p className="font-semibold">{getFarmerName()}</p>
             </div>
           </div>
 
