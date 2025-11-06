@@ -31,6 +31,8 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("User object:", user);
+
     if (!user) {
       alert("Please log in first");
       return;
@@ -46,7 +48,9 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
         stock: parseInt(formData.stock),
         location: formData.location,
         farmerId: user.id,
-        farmerTelegramId: user.id,
+        farmerTelegramId: user.telegramId || user.id,
+        farmerName: user.first_name,
+        farmerUsername: user.username,
         images: [],
         tags: formData.tags
           ? formData.tags
@@ -56,12 +60,11 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
           : [],
       };
 
-      console.log("Sending product data:", productData);
+      console.log("Final product data:", productData);
 
       const response = await productsAPI.create(productData);
       console.log("Product created successfully:", response.data);
 
-      // Reset form
       setFormData({
         name: "",
         description: "",

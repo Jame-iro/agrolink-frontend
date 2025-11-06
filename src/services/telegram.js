@@ -1,4 +1,3 @@
-// Real Telegram Web App service
 export class TelegramService {
   constructor() {
     this.tg = window.Telegram?.WebApp;
@@ -19,6 +18,21 @@ export class TelegramService {
 
   getUser() {
     return this.tg?.initDataUnsafe?.user;
+  }
+
+  getUserId() {
+    const user = this.getUser();
+    return user?.id;
+  }
+
+  getUserName() {
+    const user = this.getUser();
+    return user?.first_name;
+  }
+
+  getUsername() {
+    const user = this.getUser();
+    return user?.username;
   }
 
   getInitData() {

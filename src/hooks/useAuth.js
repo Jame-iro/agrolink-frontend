@@ -17,13 +17,13 @@ export const useAuth = () => {
       setIsTelegram(isTg);
 
       if (isTg) {
-        // Real Telegram environment
+        // Real Telegram environment - get REAL Telegram user data
         const telegramUser = telegramService.getUser();
         const initData = telegramService.getInitData();
 
         if (telegramUser && initData) {
           try {
-            // Validate with backend
+            // Validate with backend and get user data
             const response = await authAPI.validateTelegram(initData);
             if (response.data.success) {
               dispatch(setUser(response.data.user));
@@ -31,20 +31,22 @@ export const useAuth = () => {
             }
           } catch (error) {
             console.error("Telegram auth failed:", error);
-            // Fallback to Telegram user data
+
             const userData = {
               id: telegramUser.id,
+              telegramId: telegramUser.id,
               first_name: telegramUser.first_name,
               username: telegramUser.username,
+              is_premium: telegramUser.is_premium,
             };
             dispatch(setUser(userData));
           }
         }
       } else {
-        // Development mode - outside Telegram
-        console.log("Running outside Telegram");
+        console.log("Running outside Telegram - using mock data");
         const mockUser = {
           id: 123456789,
+          telegramId: 123456789,
           first_name: "Test User",
           username: "testuser",
         };
