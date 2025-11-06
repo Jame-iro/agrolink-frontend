@@ -1,3 +1,8 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../hooks/redux";
+import { addToCart } from "../store/slices/cartSlice";
+
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -67,3 +72,5 @@ const ProductCard = ({ product }) => {
     </div>
   );
 };
+
+export default ProductCard;
