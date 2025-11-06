@@ -17,13 +17,11 @@ export const useAuth = () => {
       setIsTelegram(isTg);
 
       if (isTg) {
-        // Real Telegram environment - get REAL Telegram user data
         const telegramUser = telegramService.getUser();
         const initData = telegramService.getInitData();
 
         if (telegramUser && initData) {
           try {
-            // Validate with backend and get user data
             const response = await authAPI.validateTelegram(initData);
             if (response.data.success) {
               dispatch(setUser(response.data.user));
@@ -35,7 +33,7 @@ export const useAuth = () => {
             const userData = {
               id: telegramUser.id,
               telegramId: telegramUser.id,
-              first_name: telegramUser.first_name,
+              firstName: telegramUser.firstName,
               username: telegramUser.username,
               is_premium: telegramUser.is_premium,
             };
@@ -47,7 +45,7 @@ export const useAuth = () => {
         const mockUser = {
           id: 123456789,
           telegramId: 123456789,
-          first_name: "Test User",
+          firstName: "Test User",
           username: "testuser",
         };
         dispatch(setUser(mockUser));

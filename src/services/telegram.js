@@ -27,7 +27,7 @@ export class TelegramService {
 
   getUserName() {
     const user = this.getUser();
-    return user?.first_name;
+    return user?.firstName;
   }
 
   getUsername() {
