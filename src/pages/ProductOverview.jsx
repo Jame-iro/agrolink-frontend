@@ -130,7 +130,7 @@ const ProductOverview = () => {
             <div>
               <span className="text-gray-500">Farmer:</span>
               <p className="font-semibold">
-                {currentProduct.farmerId?.firstName}
+                {product.farmerName || product.farmerId?.firstName || "Unknown"}
               </p>
             </div>
           </div>

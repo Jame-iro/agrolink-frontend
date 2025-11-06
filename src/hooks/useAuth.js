@@ -33,7 +33,7 @@ export const useAuth = () => {
             const userData = {
               id: telegramUser.id,
               telegramId: telegramUser.id,
-              firstName: telegramUser.firstName,
+              first_name: telegramUser.first_name,
               username: telegramUser.username,
               is_premium: telegramUser.is_premium,
             };
@@ -45,7 +45,7 @@ export const useAuth = () => {
         const mockUser = {
           id: 123456789,
           telegramId: 123456789,
-          firstName: "Test User",
+          first_name: "Test User",
           username: "testuser",
         };
         dispatch(setUser(mockUser));

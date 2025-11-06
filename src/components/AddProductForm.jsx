@@ -49,7 +49,7 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
         location: formData.location,
         farmerId: user.id,
         farmerTelegramId: user.telegramId || user.id,
-        farmerName: user.firstName,
+        farmerName: user.first_name,
         farmerUsername: user.username,
         images: [],
         tags: formData.tags
