@@ -128,7 +128,7 @@ const ProductOverview = ({}) => {
             <div>
               <span className="text-gray-500">Farmer:</span>
               <p className="font-semibold">
-                {product.farmerName || product.farmerId?.firstName || "Unknown"}
+              {user?.first_name || "Unknown"}
               </p>
             </div>
           </div>
