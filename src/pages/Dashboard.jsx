@@ -31,6 +31,8 @@ const Dashboard = () => {
   const { items: products } = useAppSelector((state) => state.products);
   const [activeTab, setActiveTab] = useState("overview");
 
+  console.log("Dashboard user data:", user);
+
   useEffect(() => {
     if (user) {
       dispatch(fetchUserOrders({ userId: user.id, role }));
@@ -109,7 +111,9 @@ const Dashboard = () => {
           <div className="flex items-center space-x-4">
             <div>
               <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
-              <p className="text-gray-600">Welcome back, {user?.first_name}!</p>
+              <p className="text-gray-600">
+                Welcome back, {user?.first_name || "User"}!{" "}
+              </p>
             </div>
           </div>
 
@@ -279,19 +283,29 @@ const Dashboard = () => {
                   <label className="block text-sm font-medium text-gray-700">
                     Name
                   </label>
-                  <p className="mt-1 text-lg">{user?.first_name}</p>
+                  <p className="mt-1 text-lg">
+                    {user?.first_name || "Not available"}
+                  </p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Username
                   </label>
-                  <p className="mt-1 text-lg">@{user?.username}</p>
+                  <p className="mt-1 text-lg">
+                    @{user?.username || "Not available"}
+                  </p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Role
                   </label>
                   <p className="mt-1 text-lg capitalize">{role}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Telegram ID
+                  </label>
+                  <p className="mt-1 text-lg">{user?.telegramId || user?.id}</p>
                 </div>
               </div>
             </div>

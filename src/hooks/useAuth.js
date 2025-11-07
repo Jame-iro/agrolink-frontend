@@ -29,7 +29,7 @@ export const useAuth = () => {
             }
           } catch (error) {
             console.error("Telegram auth failed:", error);
-
+            // Fallback to Telegram user data directly
             const userData = {
               id: telegramUser.id,
               telegramId: telegramUser.id,
@@ -37,6 +37,7 @@ export const useAuth = () => {
               username: telegramUser.username,
               is_premium: telegramUser.is_premium,
             };
+            console.log("Setting user data from Telegram:", userData);
             dispatch(setUser(userData));
           }
         }
@@ -48,6 +49,7 @@ export const useAuth = () => {
           first_name: "Test User",
           username: "testuser",
         };
+        console.log("Setting mock user data:", mockUser);
         dispatch(setUser(mockUser));
       }
 

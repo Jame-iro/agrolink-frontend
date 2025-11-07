@@ -9,11 +9,9 @@ export const useTelegramTheme = () => {
     if (telegramService.isTelegram()) {
       const tg = window.Telegram.WebApp;
 
-      // Set initial theme
       setIsDark(tg.colorScheme === "dark");
       setThemeParams(tg.themeParams);
 
-      // Listen for theme changes
       tg.onEvent("themeChanged", () => {
         setIsDark(tg.colorScheme === "dark");
         setThemeParams(tg.themeParams);

@@ -18,7 +18,6 @@ function App() {
   const { isDark } = useTelegramTheme();
 
   useEffect(() => {
-    // Apply Telegram theme if in Telegram
     if (isTelegram && isDark) {
       document.documentElement.classList.add("dark");
     } else {
