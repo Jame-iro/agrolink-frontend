@@ -17,29 +17,62 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 5 }) => {
 
     try {
       const formData = new FormData();
-      files.forEach((file) => {
+      files.forEach((file, index) => {
         formData.append("images", file);
+        console.log(`File ${index + 1}:`, file.name, file.type, file.size);
       });
+
+      console.log("Sending upload request...");
 
       // Upload to backend
       const response = await uploadAPI.uploadImages(formData);
+      console.log("Full upload response:", response);
+      console.log("Response data:", response.data);
 
       if (response.data.success) {
-        const newImageUrls = response.data.imageUrls;
-        onImagesChange([...images, ...newImageUrls]);
-        console.log("Images uploaded successfully:", newImageUrls);
+        // Check what we're actually getting
+        const newImageUrls =
+          response.data.imageUrls || response.data.images || [];
+
+        console.log("Received image URLs:", newImageUrls);
+
+        // Validate URLs
+        const validUrls = newImageUrls.filter((url) => {
+          const isValid =
+            url && typeof url === "string" && url.startsWith("http");
+          if (!isValid) {
+            console.warn("Invalid URL:", url);
+          }
+          return isValid;
+        });
+
+        console.log("Valid image URLs:", validUrls);
+
+        if (validUrls.length > 0) {
+          onImagesChange([...images, ...validUrls]);
+          console.log("Images added successfully:", validUrls);
+
+          // Test if images are actually accessible
+          validUrls.forEach((url, index) => {
+            const testImg = new Image();
+            testImg.onload = () =>
+              console.log(`Image ${index + 1} loaded successfully:`, url);
+            testImg.onerror = () =>
+              console.error(`Image ${index + 1} failed to load:`, url);
+            testImg.src = url;
+          });
+        } else {
+          throw new Error("No valid image URLs received from server");
+        }
       } else {
         throw new Error(response.data.error || "Upload failed");
       }
     } catch (error) {
       console.error("Upload error:", error);
-      alert(
-        error.response?.data?.error ||
-          "Failed to upload images. Please try again."
-      );
+      alert(error.message || "Failed to upload images. Please try again.");
     } finally {
       setUploading(false);
-      event.target.value = ""; // Reset file input
+      event.target.value = "";
     }
   };
 
