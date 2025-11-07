@@ -25,16 +25,18 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 5 }) => {
       const response = await uploadAPI.uploadImages(formData);
 
       if (response.data.success) {
-        // Add uploaded image URLs to the list
-        const newImageUrls = response.data.images.map((img) => img.url);
+        const newImageUrls = response.data.imageUrls;
         onImagesChange([...images, ...newImageUrls]);
         console.log("Images uploaded successfully:", newImageUrls);
       } else {
-        throw new Error("Upload failed");
+        throw new Error(response.data.error || "Upload failed");
       }
     } catch (error) {
       console.error("Upload error:", error);
-      alert("Failed to upload images. Please try again.");
+      alert(
+        error.response?.data?.error ||
+          "Failed to upload images. Please try again."
+      );
     } finally {
       setUploading(false);
       event.target.value = ""; // Reset file input
