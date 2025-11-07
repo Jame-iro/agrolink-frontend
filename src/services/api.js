@@ -40,4 +40,15 @@ export const ordersAPI = {
     api.patch(`/orders/${orderId}/status`, { status }),
 };
 
+export const uploadAPI = {
+  uploadImage: (formData) =>
+    api.post("/upload/image", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+  uploadImages: (formData) =>
+    api.post("/upload/images", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+};
+
 export default api;

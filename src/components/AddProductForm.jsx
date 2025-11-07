@@ -4,10 +4,13 @@ import { productsAPI } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
 import { FiPlus, FiUpload, FiX } from "react-icons/fi";
 
+import ImageUpload from "./ImageUpload";
+
 const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
   const dispatch = useAppDispatch();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [images, setImages] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -51,7 +54,7 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
         farmerTelegramId: user.telegramId || user.id,
         farmerName: user.first_name,
         farmerUsername: user.username,
-        images: [],
+        images: images,
         tags: formData.tags
           ? formData.tags
               .split(",")
@@ -235,17 +238,17 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
             />
           </div>
 
-          {/* Image Upload Placeholder */}
+          {/* Image Upload Component */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Product Images
             </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-              <FiUpload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-              <p className="text-sm text-gray-500">Image upload coming soon</p>
-            </div>
+            <ImageUpload
+              images={images}
+              onImagesChange={setImages}
+              maxImages={5}
+            />
           </div>
-
           {/* Actions */}
           <div className="flex space-x-3 pt-4">
             <button
