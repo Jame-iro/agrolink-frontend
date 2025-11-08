@@ -16,59 +16,29 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 5 }) => {
     setUploading(true);
 
     try {
+      // Compress images before uploading
+      const compressedFiles = await Promise.all(
+        files.map((file) => compressImage(file))
+      );
+
       const formData = new FormData();
-      files.forEach((file) => {
+      compressedFiles.forEach((file) => {
         formData.append("images", file);
       });
 
-      console.log("Sending upload request...");
+      console.log("Sending compressed upload request...");
 
-      // Upload to backend
       const response = await uploadAPI.uploadImages(formData);
-      console.log("Full upload response:", response);
-      console.log("Response data:", response.data);
 
       if (response.data.success) {
-        // Check what we're actually getting
         const newImageUrls =
           response.data.imageUrls || response.data.images || [];
 
-        console.log("Received image URLs:", newImageUrls);
-
-        const validUrls = newImageUrls.filter((url) => {
-          const isValid =
-            url &&
-            typeof url === "string" &&
-            (url.startsWith("http") || url.startsWith("data:"));
-          if (!isValid) {
-            console.warn("Invalid URL:", url);
-          }
-          return isValid;
-        });
-
-        console.log("Valid image URLs:", validUrls);
-
-        if (validUrls.length > 0) {
-          onImagesChange([...images, ...validUrls]);
-          console.log("Images added successfully:", validUrls);
-
-          // Test if images are actually accessible
-          validUrls.forEach((url, index) => {
-            const testImg = new Image();
-            testImg.onload = () =>
-              console.log(
-                `Image ${index + 1} loaded successfully:`,
-                url.substring(0, 50) + "..."
-              );
-            testImg.onerror = () =>
-              console.error(
-                `Image ${index + 1} failed to load:`,
-                url.substring(0, 50) + "..."
-              );
-            testImg.src = url;
-          });
+        if (newImageUrls.length > 0) {
+          onImagesChange([...images, ...newImageUrls]);
+          console.log("Compressed images added successfully");
         } else {
-          throw new Error("No valid image URLs received from server");
+          throw new Error("No image URLs received from server");
         }
       } else {
         throw new Error(response.data.error || "Upload failed");
@@ -80,6 +50,57 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 5 }) => {
       setUploading(false);
       event.target.value = "";
     }
+  };
+
+  // Image compression function
+  const compressImage = (file) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+
+          // Set maximum dimensions
+          const MAX_WIDTH = 800;
+          const MAX_HEIGHT = 600;
+          let { width, height } = img;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Convert to compressed JPEG
+          canvas.toBlob(
+            (blob) => {
+              const compressedFile = new File([blob], file.name, {
+                type: "image/jpeg",
+                lastModified: Date.now(),
+              });
+              resolve(compressedFile);
+            },
+            "image/jpeg",
+            0.7 // 70% quality
+          );
+        };
+      };
+    });
   };
 
   const removeImage = (indexToRemove) => {
