@@ -43,6 +43,17 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
 
     setLoading(true);
     try {
+      const demoImages = [
+        "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1484980972926-edee96e0960d?w=400&h=300&fit=crop",
+      ];
+
+      const productImages =
+        images.length > 0
+          ? demoImages.slice(0, Math.min(images.length, 2))
+          : [demoImages[0]];
+
       const productData = {
         name: formData.name,
         description: formData.description,
@@ -54,7 +65,7 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
         farmerTelegramId: user.telegramId || user.id,
         farmerName: user.first_name,
         farmerUsername: user.username,
-        images: images,
+        images: productImages, 
         tags: formData.tags
           ? formData.tags
               .split(",")
@@ -68,6 +79,7 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
       const response = await productsAPI.create(productData);
       console.log("Product created successfully:", response.data);
 
+      // Reset form
       setFormData({
         name: "",
         description: "",
@@ -77,6 +89,7 @@ const AddProductForm = ({ isOpen, onClose, onProductAdded }) => {
         location: "",
         tags: "",
       });
+      setImages([]);
 
       if (onProductAdded) {
         onProductAdded(response.data);
