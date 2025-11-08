@@ -17,9 +17,8 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 5 }) => {
 
     try {
       const formData = new FormData();
-      files.forEach((file, index) => {
+      files.forEach((file) => {
         formData.append("images", file);
-        console.log(`File ${index + 1}:`, file.name, file.type, file.size);
       });
 
       console.log("Sending upload request...");
@@ -36,10 +35,11 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 5 }) => {
 
         console.log("Received image URLs:", newImageUrls);
 
-        // Validate URLs
         const validUrls = newImageUrls.filter((url) => {
           const isValid =
-            url && typeof url === "string" && url.startsWith("http");
+            url &&
+            typeof url === "string" &&
+            (url.startsWith("http") || url.startsWith("data:"));
           if (!isValid) {
             console.warn("Invalid URL:", url);
           }
@@ -56,9 +56,15 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 5 }) => {
           validUrls.forEach((url, index) => {
             const testImg = new Image();
             testImg.onload = () =>
-              console.log(`Image ${index + 1} loaded successfully:`, url);
+              console.log(
+                `Image ${index + 1} loaded successfully:`,
+                url.substring(0, 50) + "..."
+              );
             testImg.onerror = () =>
-              console.error(`Image ${index + 1} failed to load:`, url);
+              console.error(
+                `Image ${index + 1} failed to load:`,
+                url.substring(0, 50) + "..."
+              );
             testImg.src = url;
           });
         } else {
