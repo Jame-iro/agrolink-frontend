@@ -9,7 +9,7 @@ const TelegramDebugPanel = () => {
   const { items: orders } = useAppSelector((state) => state.orders);
 
   // Only show in Telegram environment
-  if (!isTelegram) {
+  if (isTelegram) {
     return null;
   }
 
