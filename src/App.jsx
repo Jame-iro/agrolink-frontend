@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,20 +6,30 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
+import { useTelegramTheme } from "./hooks/useTelegramTheme";
 import Header from "./components/Header";
 import Store from "./pages/Store";
 import ProductOverview from "./pages/ProductOverview";
 import Dashboard from "./pages/Dashboard";
 import Cart from "./pages/Cart";
-import Checkout from "./pages/Checkout";
 import TelegramDebugPanel from "./components/TelegramDebugPanel";
+import Checkout from "./pages/Checkout";
 
 function App() {
-  const { user, loading } = useAuth();
+  const { user, loading, isTelegram } = useAuth();
+  const { isDark } = useTelegramTheme();
+
+  useEffect(() => {
+    if (isTelegram && isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isTelegram, isDark]);
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-white dark:bg-gray-900">
+      <div className="flex justify-center items-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
       </div>
     );
@@ -27,7 +37,11 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <div
+        className={`min-h-screen transition-colors ${
+          isDark ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
+        }`}
+      >
         <TelegramDebugPanel />
         <Header />
         <main>
