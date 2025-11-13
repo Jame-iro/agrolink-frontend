@@ -12,7 +12,7 @@ import Store from "./pages/Store";
 import ProductOverview from "./pages/ProductOverview";
 import Dashboard from "./pages/Dashboard";
 import Cart from "./pages/Cart";
-import TelegramDebugPanel from "./components/TelegramDebugPanel";
+// import TelegramDebugPanel from "./components/TelegramDebugPanel";
 import Checkout from "./pages/Checkout";
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
           isDark ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
         }`}
       >
-        <TelegramDebugPanel />
+        {/* <TelegramDebugPanel /> */}
         <Header />
         <main>
           <Routes>
