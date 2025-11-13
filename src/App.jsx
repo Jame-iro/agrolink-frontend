@@ -13,6 +13,8 @@ import ProductOverview from "./pages/ProductOverview";
 import Dashboard from "./pages/Dashboard";
 import Cart from "./pages/Cart";
 import TelegramDebugPanel from "./components/TelegramDebugPanel";
+import Checkout from "./pages/Checkout";
+
 function App() {
   const { user, loading, isTelegram } = useAuth();
   const { isDark } = useTelegramTheme();
@@ -48,6 +50,7 @@ function App() {
             <Route path="/product/:id" element={<ProductOverview />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

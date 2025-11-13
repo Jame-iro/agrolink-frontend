@@ -5,10 +5,11 @@ import {
   updateQuantity,
   clearCart,
 } from "../store/slices/cartSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { items, total } = useAppSelector((state) => state.cart);
 
   if (items.length === 0) {
@@ -26,6 +27,9 @@ const Cart = () => {
       </div>
     );
   }
+
+  const deliveryFee = 2.0;
+  const finalTotal = total + deliveryFee;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -63,7 +67,7 @@ const Cart = () => {
                         })
                       )
                     }
-                    className="w-8 h-8 rounded bg-gray-200 flex items-center justify-center"
+                    className="w-8 h-8 rounded bg-gray-200 flex items-center justify-center hover:bg-gray-300"
                   >
                     -
                   </button>
@@ -77,7 +81,7 @@ const Cart = () => {
                         })
                       )
                     }
-                    className="w-8 h-8 rounded bg-gray-200 flex items-center justify-center"
+                    className="w-8 h-8 rounded bg-gray-200 flex items-center justify-center hover:bg-gray-300"
                   >
                     +
                   </button>
@@ -95,29 +99,38 @@ const Cart = () => {
         </div>
 
         {/* Order Summary */}
-        <div className="bg-white rounded-lg shadow-md p-6 h-fit">
-          <h2 className="text-xl font-bold mb-4">Order Summary</h2>
-          <div className="space-y-2 mb-4">
-            <div className="flex justify-between">
-              <span>Subtotal:</span>
-              <span>${total.toFixed(2)}</span>
+        <div className="lg:col-span-1">
+          <div className="bg-white rounded-lg shadow-md p-6 h-fit">
+            <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+            <div className="space-y-2 mb-4">
+              <div className="flex justify-between">
+                <span>Subtotal:</span>
+                <span>${total.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Delivery Fee:</span>
+                <span>${deliveryFee.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between font-bold text-lg border-t pt-2">
+                <span>Total:</span>
+                <span className="text-green-600">${finalTotal.toFixed(2)}</span>
+              </div>
             </div>
-            <div className="flex justify-between font-bold text-lg">
-              <span>Total:</span>
-              <span>${total.toFixed(2)}</span>
-            </div>
+
+            <button
+              onClick={() => navigate("/checkout")}
+              className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 mb-2 font-semibold"
+            >
+              Proceed to Checkout
+            </button>
+
+            <button
+              onClick={() => dispatch(clearCart())}
+              className="w-full bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300"
+            >
+              Clear Cart
+            </button>
           </div>
-
-          <button className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 mb-2">
-            Checkout
-          </button>
-
-          <button
-            onClick={() => dispatch(clearCart())}
-            className="w-full bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300"
-          >
-            Clear Cart
-          </button>
         </div>
       </div>
     </div>
