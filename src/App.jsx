@@ -12,7 +12,7 @@ import Store from "./pages/Store";
 import ProductOverview from "./pages/ProductOverview";
 import Dashboard from "./pages/Dashboard";
 import Cart from "./pages/Cart";
-
+import TelegramDebugPanel from "./components/TelegramDebugPanel";
 function App() {
   const { user, loading, isTelegram } = useAuth();
   const { isDark } = useTelegramTheme();
@@ -40,6 +40,7 @@ function App() {
           isDark ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
         }`}
       >
+        <TelegramDebugPanel />
         <Header />
         <main>
           <Routes>

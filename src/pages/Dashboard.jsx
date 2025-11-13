@@ -451,77 +451,120 @@ const OrderCard = ({ order, role }) => {
 };
 
 // Farmer Products Component
-const FarmerProducts = ({ products }) => {
+const FarmerProducts = ({ products, user, loading }) => {
   const [showAddProduct, setShowAddProduct] = useState(false);
   const dispatch = useAppDispatch();
-  const { user } = useAuth();
 
   const handleProductAdded = (newProduct) => {
-    dispatch(fetchProducts({ farmerTelegramId: user.telegramId || user.id }));
+    dispatch(fetchProducts({}));
   };
 
-  const myProducts = products.filter(
-    (product) => product.farmerTelegramId === (user?.telegramId || user?.id)
-  );
+  if (loading) {
+    return (
+      <div className="bg-white rounded-lg shadow-md">
+        <div className="p-6 border-b">
+          <h2 className="text-xl font-bold">My Products</h2>
+        </div>
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+          <span className="ml-3 text-gray-600">Loading your products...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-md">
-      <div className="p-6 border-b flex justify-between items-center">
-        <div>
-          <h2 className="text-xl font-bold">My Products</h2>
-          <p className="text-sm text-gray-600 mt-1">
-            Showing {myProducts.length} products that you created
-          </p>
+      <div className="p-6 border-b">
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <h2 className="text-xl font-bold">My Products</h2>
+            <div className="flex items-center space-x-4 mt-2 text-sm">
+              <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                Your ID: {user?.telegramId || user?.id}
+              </div>
+              <div className="bg-green-100 text-green-800 px-2 py-1 rounded">
+                Found: {products.length} products
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => setShowAddProduct(true)}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2"
+          >
+            <FiPlus className="w-4 h-4" />
+            <span>Add Product</span>
+          </button>
         </div>
-        <button
-          onClick={() => setShowAddProduct(true)}
-          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2"
-        >
-          <FiPlus className="w-4 h-4" />
-          <span>Add Product</span>
-        </button>
+
+        {/* Status Message */}
+        {products.length === 0 && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div className="flex items-center">
+              <div className="bg-yellow-100 p-2 rounded-full">
+                <FiShoppingBag className="w-5 h-5 text-yellow-600" />
+              </div>
+              <div className="ml-3">
+                <h3 className="text-yellow-800 font-medium">
+                  No products found
+                </h3>
+                <p className="text-yellow-700 text-sm mt-1">
+                  We found 0 products linked to your account.
+                </p>
+                <p className="text-yellow-600 text-xs mt-1">
+                  Your Telegram ID: {user?.telegramId || user?.id}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      {myProducts.length === 0 ? (
+      {products.length === 0 ? (
         <div className="text-center py-8">
-          <FiShoppingBag className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-500 mb-4">
-            You haven't added any products yet
+          <FiShoppingBag className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+          <p className="text-gray-500 mb-2 text-lg">No products yet</p>
+          <p className="text-gray-400 text-sm mb-6">
+            Create your first product to get started
           </p>
           <button
             onClick={() => setShowAddProduct(true)}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2 mx-auto"
+            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 flex items-center space-x-2 mx-auto text-lg"
           >
-            <FiPlus className="w-4 h-4" />
-            <span>Add Your First Product</span>
+            <FiPlus className="w-5 h-5" />
+            <span>Create Your First Product</span>
           </button>
         </div>
       ) : (
         <div className="divide-y">
-          {myProducts.map((product) => (
+          {products.map((product) => (
             <div
               key={product._id}
-              className="p-6 flex justify-between items-center"
+              className="p-6 flex justify-between items-center hover:bg-gray-50"
             >
               <div className="flex items-center space-x-4">
                 <img
                   src={product.images?.[0] || "/placeholder-image.jpg"}
                   alt={product.name}
-                  className="w-16 h-16 object-cover rounded"
+                  className="w-16 h-16 object-cover rounded-lg"
                 />
                 <div>
-                  <h3 className="font-semibold">{product.name}</h3>
-                  <p className="text-green-600 font-bold">${product.price}</p>
-                  <p className="text-sm text-gray-600">
-                    Stock: {product.stock} • {product.category}
+                  <h3 className="font-semibold text-lg">{product.name}</h3>
+                  <p className="text-green-600 font-bold text-xl">
+                    ${product.price}
                   </p>
+                  <div className="flex items-center space-x-3 text-sm text-gray-600 mt-1">
+                    <span>Stock: {product.stock}</span>
+                    <span>•</span>
+                    <span className="capitalize">{product.category}</span>
+                  </div>
                 </div>
               </div>
               <span
-                className={`px-2 py-1 rounded text-sm ${
+                className={`px-3 py-2 rounded-full text-sm font-medium ${
                   product.isAvailable
-                    ? "bg-green-100 text-green-800"
-                    : "bg-red-100 text-red-800"
+                    ? "bg-green-100 text-green-800 border border-green-200"
+                    : "bg-red-100 text-red-800 border border-red-200"
                 }`}
               >
                 {product.isAvailable ? "Available" : "Out of Stock"}
