@@ -31,6 +31,17 @@ const Dashboard = () => {
   const { items: products } = useAppSelector((state) => state.products);
   const [activeTab, setActiveTab] = useState("overview");
 
+  useEffect(() => {
+    console.log("Current user:", user);
+    console.log("All products:", products);
+    console.log(
+      "My products:",
+      products.filter(
+        (p) => p.farmerTelegramId === (user?.telegramId || user?.id)
+      )
+    );
+  }, [products, user]);
+
   console.log("Dashboard user data:", user);
 
   useEffect(() => {
@@ -38,7 +49,9 @@ const Dashboard = () => {
       dispatch(fetchUserOrders({ userId: user.id, role }));
 
       if (role === "farmer") {
-        dispatch(fetchProducts({ farmerTelegramId: user.id }));
+        dispatch(
+          fetchProducts({ farmerTelegramId: user.telegramId || user.id })
+        );
       }
     }
   }, [dispatch, user, role]);
@@ -444,14 +457,22 @@ const FarmerProducts = ({ products }) => {
   const { user } = useAuth();
 
   const handleProductAdded = (newProduct) => {
-    // Refresh the products list
-    dispatch(fetchProducts({ farmerTelegramId: user.id }));
+    dispatch(fetchProducts({ farmerTelegramId: user.telegramId || user.id }));
   };
+
+  const myProducts = products.filter(
+    (product) => product.farmerTelegramId === (user?.telegramId || user?.id)
+  );
 
   return (
     <div className="bg-white rounded-lg shadow-md">
       <div className="p-6 border-b flex justify-between items-center">
-        <h2 className="text-xl font-bold">My Products</h2>
+        <div>
+          <h2 className="text-xl font-bold">My Products</h2>
+          <p className="text-sm text-gray-600 mt-1">
+            Showing {myProducts.length} products that you created
+          </p>
+        </div>
         <button
           onClick={() => setShowAddProduct(true)}
           className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2"
@@ -461,7 +482,7 @@ const FarmerProducts = ({ products }) => {
         </button>
       </div>
 
-      {products.length === 0 ? (
+      {myProducts.length === 0 ? (
         <div className="text-center py-8">
           <FiShoppingBag className="w-12 h-12 text-gray-400 mx-auto mb-4" />
           <p className="text-gray-500 mb-4">
@@ -477,7 +498,7 @@ const FarmerProducts = ({ products }) => {
         </div>
       ) : (
         <div className="divide-y">
-          {products.map((product) => (
+          {myProducts.map((product) => (
             <div
               key={product._id}
               className="p-6 flex justify-between items-center"
