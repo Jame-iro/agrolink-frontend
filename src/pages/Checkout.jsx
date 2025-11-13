@@ -57,9 +57,29 @@ const Checkout = () => {
     e.preventDefault();
 
     try {
+      let consumerId;
+
+      if (user?.telegramId && !isNaN(user.telegramId)) {
+        consumerId = user.telegramId;
+      } else if (user?.id) {
+        if (typeof user.id === "string" && !isNaN(user.id)) {
+          consumerId = parseInt(user.id);
+        } else if (typeof user.id === "number") {
+          consumerId = user.id;
+        } else {
+          console.log("Using user ID as string:", user.id);
+          consumerId = user.id;
+        }
+      } else {
+        throw new Error("No valid user ID found");
+      }
+
+      console.log("Consumer ID being used:", consumerId);
+      console.log("Consumer ID type:", typeof consumerId);
+
       // Create order data
       const orderData = {
-        consumerId: user?.telegramId || user?.id,
+        consumerId: consumerId,
         items: items.map((item) => ({
           productId: item.product._id,
           productName: item.product.name,
@@ -67,25 +87,24 @@ const Checkout = () => {
           price: item.product.price,
           image: item.product.images?.[0],
         })),
-        totalAmount: total,
+        totalAmount: total + 2,
         deliveryAddress: `${formData.address}, ${formData.city}`,
         customerPhone: formData.phone,
         customerNotes: formData.notes,
         paymentMethod: paymentMethod,
       };
 
-      console.log("Creating order:", orderData);
+      console.log("Creating order with data:", orderData);
 
       const result = await dispatch(createOrder(orderData)).unwrap();
 
       if (result) {
-        // Clear cart and show success
         dispatch(clearCart());
-        setActiveStep(4); // Success step
+        setActiveStep(4);
       }
     } catch (error) {
       console.error("Checkout error:", error);
-      alert("Failed to create order. Please try again.");
+      alert(`Failed to create order: ${error.message}`);
     }
   };
 
