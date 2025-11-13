@@ -28,7 +28,7 @@ const TelegramDebugPanel = () => {
           Debug
         </button>
       ) : (
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg border dark:border-gray-700 w-80 max-h-96 overflow-y-auto">
+        <div className="bg-white p-4 rounded-lg shadow-lg border w-80 max-h-96 overflow-y-auto">
           <div className="flex justify-between items-center mb-3">
             <h3 className="font-bold text-gray-800">Debug Info</h3>
             <button

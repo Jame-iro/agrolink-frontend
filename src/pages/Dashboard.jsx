@@ -119,7 +119,7 @@ const Dashboard = () => {
   return (
     <div className="container mx-auto px-4 py-6">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
           <div className="flex items-center space-x-4">
             <div>
@@ -159,7 +159,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Sidebar */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+          <div className="bg-white rounded-lg shadow-md p-4">
             <nav className="space-y-2">
               {navItems.map((item) => {
                 const IconComponent = item.icon;
@@ -194,7 +194,7 @@ const Dashboard = () => {
                   return (
                     <div
                       key={index}
-                      className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6"
+                      className="bg-white rounded-lg shadow-md p-6"
                     >
                       <div className="flex items-center justify-between mb-2">
                         <p className="text-gray-600 text-sm">{stat.label}</p>
@@ -209,7 +209,7 @@ const Dashboard = () => {
               </div>
 
               {/* Recent Activity */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
                 {orders.length === 0 ? (
                   <p className="text-gray-500 text-center py-4">
@@ -247,7 +247,7 @@ const Dashboard = () => {
 
           {/* Orders Tab */}
           {activeTab === "orders" && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+            <div className="bg-white rounded-lg shadow-md">
               <div className="p-6 border-b">
                 <h2 className="text-xl font-bold">
                   {role === "consumer" ? "My Orders" : "Customer Orders"}
@@ -278,7 +278,7 @@ const Dashboard = () => {
               {role === "farmer" ? (
                 <FarmerProducts products={products} />
               ) : (
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
+                <div className="bg-white rounded-lg shadow-md p-6 text-center">
                   <p className="text-gray-500">
                     Products management is only available for farmers
                   </p>
@@ -289,7 +289,7 @@ const Dashboard = () => {
 
           {/* Profile Tab */}
           {activeTab === "profile" && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-bold mb-4">Profile Information</h2>
               <div className="space-y-4">
                 <div>
@@ -461,7 +461,7 @@ const FarmerProducts = ({ products, user, loading }) => {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+      <div className="bg-white rounded-lg shadow-md">
         <div className="p-6 border-b">
           <h2 className="text-xl font-bold">My Products</h2>
         </div>
@@ -474,7 +474,7 @@ const FarmerProducts = ({ products, user, loading }) => {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+    <div className="bg-white rounded-lg shadow-md">
       <div className="p-6 border-b">
         <div className="flex justify-between items-center mb-4">
           <div>
