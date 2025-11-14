@@ -461,114 +461,106 @@ const FarmerProducts = ({ products, user, loading }) => {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow-md">
-        <div className="p-6 border-b">
-          <h2 className="text-xl font-bold">My Products</h2>
+      <div className="bg-white light:bg-gray-800 rounded-lg shadow-md">
+        <div className="p-4 border-b border-gray-200 light:border-gray-700">
+          <h2 className="text-xl font-bold text-gray-900 light:text-white">
+            My Products
+          </h2>
         </div>
         <div className="flex justify-center items-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
-          <span className="ml-3 text-gray-600">Loading your products...</span>
+          <span className="ml-3 text-gray-600 light:text-gray-400">
+            Loading your products...
+          </span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md">
-      <div className="p-6 border-b">
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <h2 className="text-xl font-bold">My Products</h2>
-            <div className="flex items-center space-x-4 mt-2 text-sm">
-              <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                Your ID: {user?.telegramId || user?.id}
-              </div>
-              <div className="bg-green-100 text-green-800 px-2 py-1 rounded">
+    <div className="bg-white light:bg-gray-800 rounded-lg shadow-md">
+      <div className="p-4 border-b border-gray-200 light:border-gray-700">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-xl font-bold text-gray-900 light:text-white truncate">
+              My Products
+            </h2>
+            <div className="flex flex-wrap gap-2 mt-2">
+              <div className="bg-green-100 light:bg-green-900 text-green-800 light:text-green-200 px-2 py-1 rounded text-xs">
                 Found: {products.length} products
               </div>
             </div>
           </div>
           <button
             onClick={() => setShowAddProduct(true)}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2"
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center justify-center space-x-2 whitespace-nowrap flex-shrink-0"
           >
             <FiPlus className="w-4 h-4" />
             <span>Add Product</span>
           </button>
         </div>
-
-        {/* Status Message */}
-        {products.length === 0 && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <div className="flex items-center">
-              <div className="bg-yellow-100 p-2 rounded-full">
-                <FiShoppingBag className="w-5 h-5 text-yellow-600" />
-              </div>
-              <div className="ml-3">
-                <h3 className="text-yellow-800 font-medium">
-                  No products found
-                </h3>
-                <p className="text-yellow-700 text-sm mt-1">
-                  We found 0 products linked to your account.
-                </p>
-                <p className="text-yellow-600 text-xs mt-1">
-                  Your Telegram ID: {user?.telegramId || user?.id}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
       {products.length === 0 ? (
         <div className="text-center py-8">
-          <FiShoppingBag className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-500 mb-2 text-lg">No products yet</p>
-          <p className="text-gray-400 text-sm mb-6">
+          <FiShoppingBag className="w-16 h-16 text-gray-300 light:text-gray-600 mx-auto mb-4" />
+          <p className="text-gray-500 light:text-gray-400 mb-2 text-lg">
+            No products yet
+          </p>
+          <p className="text-gray-400 light:text-gray-500 text-sm mb-6">
             Create your first product to get started
           </p>
           <button
             onClick={() => setShowAddProduct(true)}
-            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 flex items-center space-x-2 mx-auto text-lg"
+            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 flex items-center justify-center space-x-2 mx-auto text-lg"
           >
             <FiPlus className="w-5 h-5" />
             <span>Create Your First Product</span>
           </button>
         </div>
       ) : (
-        <div className="divide-y">
+        <div className="divide-y divide-gray-200 light:divide-gray-700">
           {products.map((product) => (
             <div
               key={product._id}
-              className="p-6 flex justify-between items-center hover:bg-gray-50"
+              className="p-4 hover:bg-gray-50 light:hover:bg-gray-750 transition-colors"
             >
-              <div className="flex items-center space-x-4">
-                <img
-                  src={product.images?.[0] || "/placeholder-image.jpg"}
-                  alt={product.name}
-                  className="w-16 h-16 object-cover rounded-lg"
-                />
-                <div>
-                  <h3 className="font-semibold text-lg">{product.name}</h3>
-                  <p className="text-green-600 font-bold text-xl">
-                    ${product.price}
-                  </p>
-                  <div className="flex items-center space-x-3 text-sm text-gray-600 mt-1">
-                    <span>Stock: {product.stock}</span>
-                    <span>•</span>
-                    <span className="capitalize">{product.category}</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3 min-w-0 flex-1">
+                  <img
+                    src={product.images?.[0] || "/placeholder-image.jpg"}
+                    alt={product.name}
+                    className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg flex-shrink-0"
+                  />
+                  <div className="min-w-0 flex-1">
+                    {/* Product name with proper truncation */}
+                    <h3 className="font-semibold text-gray-900 light:text-white truncate text-sm sm:text-base">
+                      {product.name}
+                    </h3>
+                    <p className="text-green-600 light:text-green-400 font-bold text-lg sm:text-xl">
+                      ${product.price}
+                    </p>
+                    <div className="flex flex-wrap gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600 light:text-gray-400 mt-1">
+                      <span>Stock: {product.stock}</span>
+                      <span className="hidden sm:inline">•</span>
+                      <span className="capitalize truncate">
+                        {product.category}
+                      </span>
+                    </div>
                   </div>
                 </div>
+                <div className="flex-shrink-0 ml-3">
+                  <span
+                    className={`px-2 py-1 sm:px-3 sm:py-2 rounded-full text-xs font-medium ${
+                      product.isAvailable
+                        ? "bg-green-100 light:bg-green-900 text-green-800 light:text-green-200 border border-green-200 light:border-green-800"
+                        : "bg-red-100 light:bg-red-900 text-red-800 light:text-red-200 border border-red-200 light:border-red-800"
+                    }`}
+                  >
+                    {product.isAvailable ? "Available" : "Out of Stock"}
+                  </span>
+                </div>
               </div>
-              <span
-                className={`px-3 py-2 rounded-full text-sm font-medium ${
-                  product.isAvailable
-                    ? "bg-green-100 text-green-800 border border-green-200"
-                    : "bg-red-100 text-red-800 border border-red-200"
-                }`}
-              >
-                {product.isAvailable ? "Available" : "Out of Stock"}
-              </span>
             </div>
           ))}
         </div>
